@@ -43,18 +43,6 @@ services:
       dns_network:
         ipv4_address: 172.20.0.2 # gives unbound a static ip address within the docker network for use in our Corefile
 
-
-  hello:
-    image: hashicorp/http-echo
-    command: [ "-text=Hello, World!" ]
-    expose:
-      - "5678"
-    ports:
-      - "5678:5678"
-    restart: unless-stopped
-    networks:
-      - dns_network
-
 volumes:
   caddy_data:
   caddy_config:
