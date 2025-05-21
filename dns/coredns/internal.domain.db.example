@@ -1,0 +1,13 @@
+$TTL 3600
+@               IN SOA  camilo.ns.cloudflare.com. <admin account email>. (
+                2023081201 ; Serial
+                3600       ; Refresh
+                1800       ; Retry
+                604800     ; Expire
+                60         ; Minimum TTL
+                )
+
+                IN NS   camilo.ns.cloudflare.com.
+
+; Define A records for subdomains
+*               IN A    <IP Address you want your subdomains redirected to>

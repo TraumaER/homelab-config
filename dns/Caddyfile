@@ -1,0 +1,9 @@
+*.bannach.xyz {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    }
+}
+
+hello.bannach.xyz {
+    reverse_proxy hello:5678
+}

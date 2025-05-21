@@ -1,0 +1,25 @@
+. {
+    log
+    cache
+    prometheus
+
+    hosts /etc/coredns/hosts.blocklist {
+        reload 3600s
+        no_reverse
+        fallthrough
+    }
+
+    # forward request onto unbound
+    forward . 172.20.0.2:5353 {
+        policy sequential
+    }
+
+}
+
+{$INTERNAL_DOMAIN} {
+    hosts {
+        {$REVERSE_PROXY_IP} *.{$INTERNAL_DOMAIN} {$INTERNAL_DOMAIN}
+        reload 3600s
+        fallthrough
+    }
+}

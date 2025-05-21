@@ -1,0 +1,7 @@
+.idea/
+
+.env*
+!.env.template
+
+hosts.blocklist
+internal.domain.db

@@ -1,0 +1,63 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - dns_network
+
+  coredns:
+    image: coredns/coredns:1.12.1
+    volumes:
+      - ./coredns/Corefile:/etc/coredns/Corefile
+      - ./coredns/hosts.blocklist:/etc/coredns/hosts.blocklist
+    command: -conf /etc/coredns/Corefile
+    depends_on:
+      - unbound
+    env_file:
+      - .env
+    ports:
+      - "54:53/udp"
+      - "54:53/tcp"
+    restart: unless-stopped
+    networks:
+      - dns_network
+
+
+  unbound:
+    image: klutchell/unbound
+    volumes:
+      - ./unbound/custom.conf.d:/etc/unbound/custom.conf.d
+    restart: unless-stopped
+    networks:
+      dns_network:
+        ipv4_address: 172.20.0.2
+
+
+  hello:
+    image: hashicorp/http-echo
+    command: [ "-text=Hello, World!" ]
+    expose:
+      - "5678"
+    restart: unless-stopped
+    networks:
+      - dns_network
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  dns_network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
