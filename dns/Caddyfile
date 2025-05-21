@@ -6,5 +6,5 @@
 
 hello.{env.INTERNAL_DOMAIN} {
     respond /health-check 200
-    respond "Hello, world!"
+    respond "Hello world, Served from Caddy!"
 }
