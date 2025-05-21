@@ -1,9 +1,9 @@
-*.bannach.xyz {
+*.{env.INTERNAL_DOMAIN} {
     tls {
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
     }
 }
 
-hello.bannach.xyz {
+hello.{env.INTERNAL_DOMAIN} {
     reverse_proxy hello:5678
 }
