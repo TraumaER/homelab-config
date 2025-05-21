@@ -27,8 +27,8 @@ services:
     env_file:
       - .env
     ports:
-      - "54:53/udp"
-      - "54:53/tcp"
+      - "53:53/udp"
+      - "53:53/tcp"
     restart: unless-stopped
     networks:
       - dns_network
