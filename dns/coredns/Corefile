@@ -17,9 +17,5 @@
 }
 
 {$INTERNAL_DOMAIN} {
-    hosts {
-        {$REVERSE_PROXY_IP} *.{$INTERNAL_DOMAIN} {$INTERNAL_DOMAIN}
-        reload 3600s
-        fallthrough
-    }
+    file /etc/coredns/internal.domain.db
 }

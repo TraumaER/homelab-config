@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: caddy:2-alpine
+    image: ghcr.io/caddybuilds/caddy-cloudflare:latest
     restart: unless-stopped
     env_file:
       - .env
@@ -19,6 +19,7 @@ services:
     image: coredns/coredns:1.12.1
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile
+      - ./coredns/internal.domain.db:/etc/coredns/internal.domain.db
       - ./coredns/hosts.blocklist:/etc/coredns/hosts.blocklist
     command: -conf /etc/coredns/Corefile
     depends_on:
@@ -48,6 +49,8 @@ services:
     command: [ "-text=Hello, World!" ]
     expose:
       - "5678"
+    ports:
+      - "5678:5678"
     restart: unless-stopped
     networks:
       - dns_network
