@@ -41,7 +41,7 @@ services:
     restart: unless-stopped
     networks:
       dns_network:
-        ipv4_address: 172.20.0.2
+        ipv4_address: 172.20.0.2 # gives unbound a static ip address within the docker network for use in our Corefile
 
 
   hello:
