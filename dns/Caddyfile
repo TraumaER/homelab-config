@@ -1,10 +1,16 @@
-*.bannach.xyz {
+*.{$INTERNAL_DOMAIN} {
     tls {
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
     }
+
+    @hello host hello.{$INTERNAL_DOMAIN}
+    handle @hello {
+        respond /health-check 200
+        respond "Hello world, Served from Caddy!"
+    }
+
+    handle {
+        abort
+    }
 }
 
-hello.bannach.xyz {
-    respond /health-check 200
-    respond "Hello world, Served from Caddy!"
-}
