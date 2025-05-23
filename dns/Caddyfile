@@ -3,6 +3,8 @@
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
     }
 
+    # TODO: Generate handlers from docker labels and import handler files here
+
     @hello host hello.{$INTERNAL_DOMAIN}
     handle @hello {
         respond /health-check 200
