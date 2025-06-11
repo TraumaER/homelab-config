@@ -5,6 +5,8 @@
 
     # TODO: Generate handlers from docker labels and import handler files here
 
+    import /etc/chs/handlers/*
+
     @hello host hello.{$INTERNAL_DOMAIN}
     handle @hello {
         respond /health-check 200

@@ -1,0 +1,19 @@
+services:
+  privatebin:
+    image: privatebin/nginx-fpm-alpine
+    container_name: privatebin
+    labels:
+      app.subdomain: "privatebin"
+    volumes:
+      - ./PrivateBin/data:/srv/data
+      - ./PrivateBin/conf.php:/srv/cfg/conf.php:ro
+    ports:
+      - '8100:8080'
+    read_only: true
+    restart: unless-stopped
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel run

@@ -10,10 +10,21 @@ services:
       - "443:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - chs_shared:/etc/chs:ro
       - caddy_data:/data
       - caddy_config:/config
     networks:
       - dns_network
+
+  chs_server:
+    image: traumaer/chs-server:latest
+    ports:
+      - "8000:3030"
+    volumes:
+      - chs_shared:/data/chs/shared
+      - chs_private:/data/chs/private
+    env_file:
+      - .env
 
   coredns:
     image: coredns/coredns:1.12.1
@@ -44,6 +55,8 @@ services:
         ipv4_address: 172.20.0.2 # gives unbound a static ip address within the docker network for use in our Corefile
 
 volumes:
+  chs_shared:
+  chs_private:
   caddy_data:
   caddy_config:
 
