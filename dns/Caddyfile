@@ -6,8 +6,7 @@
         X-Reverse-Proxied-By "Caddy"
     }
 
-    # TODO: Generate handlers from docker labels and import handler files here
-
+    import /etc/caddy/handlers/*
     import /etc/chs/handlers/*
 
     @hello host hello.{$INTERNAL_DOMAIN}
