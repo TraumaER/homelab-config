@@ -2,6 +2,9 @@
     tls {
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
     }
+    header {
+        X-Reverse-Proxied-By "Caddy"
+    }
 
     # TODO: Generate handlers from docker labels and import handler files here
 

@@ -13,21 +13,29 @@ services:
       - chs_shared:/etc/chs:ro
       - caddy_data:/data
       - caddy_config:/config
+    depends_on:
+      - unbound
     networks:
       - dns_network
 
   chs_server:
     image: traumaer/chs-server:latest
+    restart: unless-stopped
     ports:
-      - "8000:3030"
+      - "3030:3030"
     volumes:
       - chs_shared:/data/chs/shared
       - chs_private:/data/chs/private
     env_file:
       - .env
+    depends_on:
+      - unbound
+    networks:
+      - dns_network
 
   coredns:
     image: coredns/coredns:1.12.1
+    restart: unless-stopped
     volumes:
       - ./coredns/Corefile:/etc/coredns/Corefile
       - ./coredns/internal.domain.db:/etc/coredns/internal.domain.db
@@ -40,16 +48,14 @@ services:
     ports:
       - "53:53/udp"
       - "53:53/tcp"
-    restart: unless-stopped
     networks:
       - dns_network
 
-
   unbound:
     image: klutchell/unbound
+    restart: unless-stopped
     volumes:
       - ./unbound/custom.conf.d:/etc/unbound/custom.conf.d
-    restart: unless-stopped
     networks:
       dns_network:
         ipv4_address: 172.20.0.2 # gives unbound a static ip address within the docker network for use in our Corefile
