@@ -14,9 +14,6 @@ services:
       - chs_shared:/etc/chs:ro
       - caddy_data:/data
       - caddy_config:/config
-    depends_on:
-      unbound:
-        condition: service_healthy
 
     networks:
       - dns_network
@@ -31,9 +28,6 @@ services:
       - chs_private:/data/chs/private
     env_file:
       - .env
-    depends_on:
-      unbound:
-        condition: service_healthy
     networks:
       - dns_network
 
@@ -45,9 +39,6 @@ services:
       - ./coredns/internal.domain.db:/etc/coredns/internal.domain.db
       - ./coredns/hosts.blocklist:/etc/coredns/hosts.blocklist
     command: -conf /etc/coredns/Corefile
-    depends_on:
-      unbound:
-        condition: service_healthy
     env_file:
       - .env
     ports:
@@ -55,21 +46,6 @@ services:
       - "53:53/tcp"
     networks:
       - dns_network
-
-  unbound:
-    image: klutchell/unbound
-    restart: unless-stopped
-    volumes:
-      - ./unbound/custom.conf.d:/etc/unbound/custom.conf.d
-    healthcheck:
-      test: [ "CMD", "dig", "-p","5353","@127.0.0.1", "google.com" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-    networks:
-      dns_network:
-        ipv4_address: 172.20.0.2 # gives unbound a static ip address within the docker network for use in our Corefile
 
 volumes:
   chs_shared:
@@ -79,6 +55,3 @@ volumes:
 
 networks:
   dns_network:
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
