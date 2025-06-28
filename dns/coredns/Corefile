@@ -10,7 +10,7 @@
     }
 
     # forward request onto unbound
-    forward . 172.20.0.2:5353 {
+    forward . {$UNBOUND_ADDR} {
         policy sequential
     }
 
